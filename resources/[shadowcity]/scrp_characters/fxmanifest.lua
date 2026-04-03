@@ -14,7 +14,7 @@ shared_scripts {
 server_scripts {
     '@scrp_lib/shared/logger.lua',
     'server/repository.lua',
-    'server/service.lua',
+    'server/services.lua',
     'server/callbacks.lua',
     'server/main.lua'
 }
