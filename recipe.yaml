@@ -1,0 +1,57 @@
+$engine: 3
+$onesync: on
+
+name: ShadowCity RP Core
+version: 0.1.0
+author: ShadowCity RP
+description: txAdmin recipe for ShadowCity RP with SCRP framework and oxmysql.
+
+variables:
+  serverName: "ShadowCity RP"
+  recipeGitRepo: "DEIN_GITHUB_USER/shadow_city_rp-framework"
+  recipeGitRef: "main"
+
+tasks:
+  # DB-Verbindung im txAdmin Deployer anlegen
+  - action: connect_database
+
+  # Default CFX Resources
+  - action: download_github
+    src: https://github.com/citizenfx/cfx-server-data
+    ref: master
+    subpath: resources
+    dest: ./resources/[cfx-default]
+
+  # oxmysql laden
+  - action: download_file
+    url: https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip
+    path: ./tmp/oxmysql.zip
+
+  - action: unzip
+    src: ./tmp/oxmysql.zip
+    dest: ./resources/[standalone]
+
+  # ShadowCity Framework laden
+  - action: download_github
+    src: https://github.com/{{recipeGitRepo}}
+    ref: "{{recipeGitRef}}"
+    dest: ./tmp/scrp
+
+  - action: move_path
+    src: ./tmp/scrp/resources/[shadowcity]
+    dest: ./resources/[shadowcity]
+
+  - action: copy_path
+    src: ./tmp/scrp/server.cfg
+    dest: ./server.cfg
+
+  # Platzhalter in server.cfg ersetzen
+  - action: replace_string
+    file: ./server.cfg
+    search: "{{serverName}}"
+    replace: "{{serverName}}"
+
+  - action: replace_string
+    file: ./server.cfg
+    search: "{{dbConnectionString}}"
+    replace: "{{dbConnectionString}}"
