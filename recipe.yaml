@@ -8,7 +8,7 @@ description: Custom txAdmin recipe for ShadowCity RP with SCRP framework and oxm
 
 variables:
     recipeGitRepo: SaschaB88/shadow_city_rp-framework
-    recipeGitRef: main
+    recipeGitRef: master
 
 tasks:
     - action: connect_database
